@@ -1,5 +1,5 @@
-function hideElement() {
-  throw new Error("not yet implemented");
+function hideElement(id) {
+  setProperty(id, "hidden", true);
 }
 
 /**
@@ -21,8 +21,14 @@ function onEvent(id, event, callback) {
   }
 }
 
-function playSound() {
-  throw new Error("not yet implemented");
+function playSound(url, loop = false) {
+  const audio = getSound(url);
+  audio.loop = loop;
+  audio.play().catch((error) => {
+    console.log(
+      "Playback failed. Note: Browsers usually require a user gesture (like a click) first!",
+    );
+  });
 }
 
 function randomNumber(minimum, maximum) {
@@ -37,8 +43,8 @@ function randomNumber(minimum, maximum) {
   }
 }
 
-function setImageURL() {
-  throw new Error("not yet implemented");
+function setImageURL(id, url) {
+  setProperty(id, "image", url);
 }
 
 /**
@@ -99,16 +105,17 @@ function setScreen(htmlFile) {
   }
 }
 
-function setText() {
-  throw new Error("not yet implemented");
+function setText(id, text) {
+  setProperty(id, "text", text);
 }
 
-function showElement() {
-  throw new Error("not yet implemented");
+function showElement(id) {
+  setProperty(id, "hidden", false);
 }
 
-function stopSound() {
-  throw new Error("not yet implemented");
+function stopSound(url) {
+  const audio = getSound(url);
+  audio.pause();
 }
 
 // INTERNAL FUNCTIONS ////////////////////////////////////////////////////
@@ -129,8 +136,16 @@ function getCorrespondingProperty(property, value) {
         throw new Error("value is not a number - " + value);
       return ["style.height", `${value}px`];
     }
+    case "hidden": {
+      if (typeof value !== "boolean")
+        throw new Error("value is not a Boolean - " + value);
+      const shouldHide = value === true ? "none" : "initial";
+      return ["style.display", `${shouldHide}`];
+    }
     case "image":
-      throw new Error("not yet implemented");
+      if (typeof value !== "string")
+        throw new Error("value is not a string - " + value);
+      return ["src", value];
     case "text":
       return ["innerText", value];
     case "width": {
@@ -161,4 +176,14 @@ function set(object, propertyPath, value) {
     if (typeof target[path] === "object") target = target[path];
   }
   target[path] = value;
+}
+
+const sounds = {};
+function getSound(file) {
+  let sound = sounds[file];
+  if (!sound) {
+    sound = new Audio(file);
+    sounds[file] = sound;
+  }
+  return sound;
 }
