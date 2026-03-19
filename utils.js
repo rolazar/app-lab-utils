@@ -1,3 +1,8 @@
+function getText(id) {
+  const text = get(id, "value");
+  return text;
+}
+
 function hideElement(id) {
   setProperty(id, "hidden", true);
 }
@@ -62,7 +67,10 @@ function setPosition(id, x, y, width, height) {
     if (!y) throw new Error("y is missing");
     const element = document.getElementById(id);
     if (!element) throw new Error("invalid id - " + id);
-    set(element, "style.transform", `translate(${x}px,${y}px)`);
+
+    if (typeof x === "number") x = x + "px";
+    if (typeof y === "number") y = y + "px";
+    set(element, "style.transform", `translate(${x},${y})`);
     if (width || width === 0) setProperty(id, "width", width);
     if (height || height === 0) setProperty(id, "height", height);
   } catch (error) {
@@ -154,23 +162,23 @@ function getCorrespondingProperty(property, value) {
       return ["style.width", `${value}px`];
     }
     case "x": {
-      if (typeof value !== "number")
-        throw new Error("value is not a number - " + value);
-      return ["style.transform", `translateX(${value}px)`];
+      if (typeof value === "number")
+        return ["style.transform", `translateX(${value}px)`];
+      else return ["style.transform", `translateX(${value})`];
     }
     case "y": {
-      if (typeof value !== "number")
-        throw new Error("value is not a number - " + value);
-      return ["style.transform", `translateY(${value}px)`];
+      if (typeof value === "number")
+        return ["style.transform", `translateY(${value}px)`];
+      else return ["style.transform", `translateY(${value})`];
     }
     default:
       throw new Error("invalid property - " + property);
   }
 }
 
-function set(object, propertyPath, value) {
+function set(element, propertyPath, value) {
   const paths = propertyPath.split(".");
-  let target = object;
+  let target = element;
   let path = "";
   for (path of paths) {
     if (typeof target[path] === "object") target = target[path];
@@ -186,4 +194,19 @@ function getSound(file) {
     sounds[file] = sound;
   }
   return sound;
+}
+
+function get(id, propertyPath) {
+  const element = document.getElementById(id);
+  if (!element) throw new Error("invalid id - " + id);
+  const paths = propertyPath.split(".");
+
+  let target = element;
+  let path = "";
+
+  for (path of paths) {
+    if (typeof target[path] === "object") target = target[path];
+  }
+  const value = target[path];
+  return value;
 }
