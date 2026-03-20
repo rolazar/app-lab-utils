@@ -128,6 +128,8 @@ function stopSound(url) {
 
 // INTERNAL FUNCTIONS ////////////////////////////////////////////////////
 
+let x = "0px";
+let y = "0px";
 function getCorrespondingProperty(property, value) {
   switch (property) {
     case "background-color":
@@ -162,14 +164,14 @@ function getCorrespondingProperty(property, value) {
       return ["style.width", `${value}px`];
     }
     case "x": {
-      if (typeof value === "number")
-        return ["style.transform", `translateX(${value}px)`];
-      else return ["style.transform", `translateX(${value})`];
+      if (typeof value === "number") x = value + "px";
+      else x = value;
+      return ["style.transform", `translate(${x},${y})`];
     }
     case "y": {
-      if (typeof value === "number")
-        return ["style.transform", `translateY(${value}px)`];
-      else return ["style.transform", `translateY(${value})`];
+      if (typeof value === "number") y = value + "px";
+      else y = value;
+      return ["style.transform", `translate(${x},${y})`];
     }
     default:
       throw new Error("invalid property - " + property);
