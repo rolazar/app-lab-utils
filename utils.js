@@ -3,6 +3,14 @@ function getText(id) {
   return text;
 }
 
+function getImageURL(id) {
+  const element = document.getElementById("file1");
+  if (!element) throw new Error("invalid id");
+  const file = element.files[0];
+  const url = URL.createObjectURL(file);
+  return url;
+}
+
 function hideElement(id) {
   setProperty(id, "hidden", true);
 }
