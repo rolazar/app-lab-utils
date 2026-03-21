@@ -6,8 +6,10 @@ function getText(id) {
 function getImageURL(id) {
   const element = document.getElementById(id);
   if (!element) throw new Error("invalid id");
-  const file = element.files[0];
+  const file = element.files ? element.files[0] : null;
+  if (!file) throw new Error("image url not found");
   const url = URL.createObjectURL(file);
+  if (!url) throw new Error("image url not found");
   return url;
 }
 
