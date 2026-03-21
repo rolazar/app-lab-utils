@@ -1,3 +1,10 @@
+function getNumber(id) {
+  const value = get(id, "value");
+  const number = Number(value);
+  if (isNaN(number)) throw new Error("value must be a number - " + value);
+  return number;
+}
+
 function getText(id) {
   const text = get(id, "value");
   return text;
