@@ -4,7 +4,7 @@ function getText(id) {
 }
 
 function getImageURL(id) {
-  const element = document.getElementById("file1");
+  const element = document.getElementById(id);
   if (!element) throw new Error("invalid id");
   const file = element.files[0];
   const url = URL.createObjectURL(file);
