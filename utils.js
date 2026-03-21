@@ -1,3 +1,9 @@
+function getChecked(id) {
+  const isChecked = get(id, "checked");
+  if (isChecked === undefined) throw new Error("element cannot be checked");
+  return isChecked;
+}
+
 function getNumber(id) {
   const value = get(id, "value");
   const number = Number(value);
