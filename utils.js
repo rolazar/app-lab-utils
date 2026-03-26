@@ -11,6 +11,11 @@ function getNumber(id) {
   return number;
 }
 
+function getProperty(id, property) {
+  const value = get(id, property);
+  return value;
+}
+
 function getText(id) {
   const text = get(id, "value");
   return text;
@@ -59,6 +64,21 @@ function playSound(url, loop = false) {
   });
 }
 
+function playSpeech() {
+  // NOT IMPLEMENTED
+}
+
+function promptNum(message) {
+  const response = prompt(message);
+  const number = Number(response);
+  return number;
+}
+
+function promptText(message) {
+  const response = prompt(message);
+  return response;
+}
+
 function randomNumber(minimum, maximum) {
   try {
     if (!minimum && minimum != 0) throw new Error("minimum number is missing");
@@ -101,6 +121,10 @@ function setPosition(id, x, y, width, height) {
   }
 }
 
+function setSize() {
+  // NOT IMPLEMENTED
+}
+
 /**
  * @summary Changes the property of an element.
  * @param {string} id The id of an element.
@@ -138,6 +162,10 @@ function setScreen(htmlFile) {
 
 function setText(id, text) {
   setProperty(id, "text", text);
+}
+
+function setNumber(id, text) {
+  setProperty(id, "number", text);
 }
 
 function showElement(id) {
@@ -179,6 +207,8 @@ function getCorrespondingProperty(property, value) {
       if (typeof value !== "string")
         throw new Error("value is not a string - " + value);
       return ["src", value];
+    case "number":
+      return ["value", value];
     case "text":
       return ["innerText", value];
     case "width": {
