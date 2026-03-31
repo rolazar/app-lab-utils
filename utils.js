@@ -1,3 +1,7 @@
+function appendItem(array, item) {
+  array.push(item);
+}
+
 function getChecked(id) {
   const isChecked = get(id, "checked");
   if (isChecked === undefined) throw new Error("element cannot be checked");
@@ -33,6 +37,11 @@ function getImageURL(id) {
 
 function hideElement(id) {
   setProperty(id, "hidden", true);
+}
+
+function insertItem(array, index, item) {
+  const itemsToRemove = 0;
+  array.splice(index, itemsToRemove, item);
 }
 
 /**
@@ -89,6 +98,10 @@ function randomNumber(minimum, maximum) {
   } catch (error) {
     console.error(error.stack);
   }
+}
+
+function removeItem(array, index) {
+  array.splice(index, 1);
 }
 
 function setImageURL(id, url) {
